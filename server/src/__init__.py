@@ -7,6 +7,9 @@ from flask_cors import CORS,cross_origin
 
 
 def create_app() -> Flask:
+
+    UPLOAD_FOLDER = 'src/static'
+
     app = Flask(__name__)
     cors= CORS(app)
     app.config.from_mapping(
@@ -16,6 +19,7 @@ def create_app() -> Flask:
             task_ignore_result=True,
         ),
     )
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
     app.config.from_prefixed_env()
     celery_init_app(app)
 
