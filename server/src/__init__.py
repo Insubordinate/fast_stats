@@ -10,7 +10,7 @@ def create_app() -> Flask:
 
     UPLOAD_FOLDER = 'src/static'
 
-    app = Flask(__name__)
+    app = Flask(__name__,static_url_path='/src/static')
     cors= CORS(app)
     app.config.from_mapping(
         CELERY=dict(

@@ -1,53 +1,31 @@
-import { handleFormSubmit,handleFileChange} from "./api_calls"
-import React, { useState } from 'react';
-import apiURL from '../api';
+import { get_all_rows, handleFileChange, handleUploadClick } from "./api_calls"
+import React, { useState, useEffect } from 'react';
+import { ProcessedList } from "./processed_list";
 
 export const App = () => {
-
-
-  // State holds the value returned to the client by the server
-  const [addedValue, setAddedValue] = useState('Placeholder')
   // State holds the current file that is to be uploaded to the server
-  const [data,setData] = useState()
+  const [data, setData] = useState()
+  const [processedResults, setProcessedResults] = useState([])
 
-
-
-
-
-
+  useEffect(() => {
+      get_all_rows(setProcessedResults)
+  }, [])
 
 
 
   return (
-    <div>
-
-
-      <div>
-        <form onSubmit={(e) => handleFormSubmit(e, 'add', setAddedValue)} encType='multipart/form-data'>
-          <input type='text'></input>
-          <input type='text'></input>
-          <input type='submit' value='Submit'></input>
-        </form>
-
-        <p>{addedValue}</p>
-      </div>
-
-
-      <div>
-        <form onSubmit={(e) => handleFormSubmit(e,'upload',data)} encType='multipart/form-data'>
-          <input type="file" name='file' onChange={(e) => handleFileChange(e,setData)} />
+    <div className="top_level_container">
+        <form onSubmit={(e) => handleUploadClick(e, data)} encType='multipart/form-data'>
+          <input type="file" name='file' onChange={(e) => handleFileChange(e, setData)} />
           <input type='submit' value='Upload'></input>
         </form>
 
-      </div>
 
-      <div>
-        <form onSubmit={(e) => handleFormSubmit(e,'process')} encType='multipart/form-data'>
-          <input type='text' placeholder="Please Submit File Name"></input>
-          <input type='submit' value='Submit'></input>
-        </form>
+        <button onClick={(e) => get_all_rows(setProcessedResults)}>Refresh</button>
 
-      </div>
+
+
+        <ProcessedList data={processedResults}/>
 
 
     </div>
