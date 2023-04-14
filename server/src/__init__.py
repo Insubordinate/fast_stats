@@ -1,14 +1,16 @@
 from flask import Flask
 from celery import Celery,Task
 from flask_cors import CORS,cross_origin
-
+from os import environ
+from dotenv import load_dotenv
 
 
 
 
 def create_app() -> Flask:
-
+    load_dotenv()
     UPLOAD_FOLDER = 'src/static'
+    API_KEY = environ.get('API_KEY')
 
     app = Flask(__name__,static_url_path='/src/static')
     cors= CORS(app)
@@ -20,6 +22,7 @@ def create_app() -> Flask:
         ),
     )
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+    app.config['API_KEY'] = API_KEY
     app.config.from_prefixed_env()
     celery_init_app(app)
 

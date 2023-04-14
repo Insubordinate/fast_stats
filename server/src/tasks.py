@@ -20,6 +20,8 @@ import requests
 def process(id,unique_id):
     try:
 
+        ##
+        
         ### Process the CSV
         df = pd.read_csv(os.path.join(current_app.config['UPLOAD_FOLDER'], id))
         
@@ -77,8 +79,7 @@ def process(id,unique_id):
 
 
 def issue_slack_message(id_of_image):
-    token = "Bearer xoxb-5113916375905-5117860592577-rXyRKiUUYfbOCtLjCXJjSBvT"
-    channel = "C052Z4XBMNF"
+    token = "Bearer " + current_app.config['API_KEY']
     url = "https://slack.com/api/chat.postMessage"
     headers = {"Content-Type": 'application/json; charset=utf-8',
                "Authorization": token}
@@ -91,7 +92,7 @@ def issue_slack_message(id_of_image):
 
 
 def upload_to_slack(thread,image_location,message_text):
-    token = "Bearer xoxb-5113916375905-5117860592577-rXyRKiUUYfbOCtLjCXJjSBvT"
+    token = "Bearer " + current_app.config['API_KEY']
     url = "https://slack.com/api/files.upload"
     headers = {"Authorization": token}
     fp = image_location
